@@ -1,6 +1,9 @@
 ##  This Directory contains the folders and files for the Group Lab and Project works
 
+David Pissarra
+
 Henrique Cavaco
+
 Valentim Romão
 
 Each folder contains the components for setting up an Infrastructure on a certain Cloud.
