@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <style>
+    .button {
+    color: black;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    }
+
+    .button:hover {
+    background-color: #008CBA;
+    color: white;
+    }
+
+    .button_equals {
+    color: black;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    }
+
+    .button_equals:hover {
+    background-color: #008CBA;
+    color: white;
+    }
+
+    .button_plus {
+    color: black;
+    padding: 16px 29px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    }
+
+    .button_plus:hover {
+    background-color: #008CBA;
+    color: white;
+    }
+
+    .button_multiply {
+    color: black;
+    padding: 16px 31px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    }
+
+    .button_multiply:hover {
+    background-color: #008CBA;
+    color: white;
+    }
+
+    .button_divide {
+    color: black;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    }
+
+    .button_divide:hover {
+    background-color: #008CBA;
+    color: white;
+    }
+
+    .button_0 {
+    color: black;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    }
+
+    .button_0:hover {
+    background-color: #008CBA;
+    color: white;
+    }
+
+    .button_dot {
+    color: black;
+    padding: 16px 34px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    }
+
+    .button_dot:hover {
+    background-color: #008CBA;
+    color: white;
+    }
+
+    .button_minus {
+    color: black;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    }
+
+    .button_minus:hover {
+    background-color: #008CBA;
+    color: white;
+    }
+
+    .button_ac {
+    color: black;
+    padding: 16px 68px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    }
+
+    .button_ac:hover {
+    background-color: #008CBA;
+    color: white;
+    }
+
+    .button_del {
+    color: black;
+    padding: 16px 60px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    }
+
+    .button_del:hover {
+    background-color: #008CBA;
+    color: white;
+    }
+
+    .display {
+        font-family: 'Orbitron', sans-serif;
+        color: black;
+        background-color: green;
+        height: 35px;
+        width: 295px;
+        padding: 15px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 24px;
+        margin: 4px 2px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+    }
+
+    
+
+    </style>
+    </head>
+    <body>
+        <div>
+            <span class="display" id="display">
+        </div>
+
+        <div>
+            <button class="button_ac" id="button_ac">AC</button>
+            <button class="button_del" id="button_del">DEL</button>
+        </div>
+
+        <div>
+            <button class="button" id="button1">1</button>
+            <button class="button" id="button2">2</button>
+            <button class="button" id="button3">3</button>
+            <button class="button_multiply" id="button_multiply">*</button>
+        </div>
+        
+        <div>
+            <button class="button" id="button4">4</button>
+            <button class="button" id="button5">5</button>
+            <button class="button" id="button6">6</button>
+            <button class="button_divide" id="button_divide">/</button>
+        </div>
+        
+        <div>
+            <button class="button" id="button7">7</button>
+            <button class="button" id="button8">8</button>
+            <button class="button" id="button9">9</button>
+            <button class="button_plus" id="button_plus">+</button>
+        </div>
+
+    <div>
+        <button class="button" id="button0">0</button>
+        <button class="button_dot" id="button_dot">.</button>
+        <button class="button_equals" id="button_equals">=</button>
+        <button class="button_minus" id="button_minus">-</button>
+    </div>
+
+    </body>
+    <script src="services.js"></script>
+</html>
