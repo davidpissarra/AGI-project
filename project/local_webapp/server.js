@@ -2,12 +2,12 @@ var express = require('express');
 var app = express();
 
 var bodyParser = require("body-parser");
-app.use(express.static('/mnt/c/Users/valen/Desktop/Test_express/'));
+app.use(express.static('./'));
 
-app.listen(5000, function () {
-    console.log('Server running in port 5000..');
+app.listen(4000, function () {
+    console.log('Server running in port 4000..');
 });
 
 app.get('/', function (req, res) {
-    res.sendFile('/mnt/c/Users/valen/Desktop/Test_express/index.html');
+    res.sendFile('./index.html');
 });

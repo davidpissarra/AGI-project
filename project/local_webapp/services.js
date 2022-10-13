@@ -1,8 +1,10 @@
+import ExpressionService from './services/ExpressionService.js'
+
 var expression = ''
 var display = document.getElementById('display');
 display.textContent = ''
 
-function appendClickedButton(b) {
+async function appendClickedButton(b) {
     if(b === 'del') {
         expression = expression.slice(0,-1)
     } else if(b === 'ac') {
@@ -17,21 +19,24 @@ function appendClickedButton(b) {
             }
         }
         if(!hasOp) {return}
-    
-        eval('expression=('+expression+').toString()')
+        var arr = expression.split("+")
+        var arg1 = arr[0]
+        var arg2 = arr[1]
+        const response = await ExpressionService.getExpressionResult(arg1, arg2);
+        expression = response.data.result.toString()
     } else if (b === '+') {
         var ops = ["+", "-", "/", "*"]
         for(const op of ops) {if(expression.includes(op)) return}
         expression = expression + '+'
-    }  else if (b === '-') {
+    } else if (b === '-') {
         var ops = ["+", "-", "/", "*"]
         for(const op of ops) {if(expression.includes(op)) return}
         expression = expression + '-'
-    }  else if (b === '*') {
+    } else if (b === '*') {
         var ops = ["+", "-", "/", "*"]
         for(const op of ops) {if(expression.includes(op)) return}
         expression = expression + '*'
-    }  else if (b === '/') {
+    } else if (b === '/') {
         var ops = ["+", "-", "/", "*"]
         for(const op of ops) {if(expression.includes(op)) return}
         expression = expression + '/'
@@ -95,4 +100,3 @@ button_ac.addEventListener('click', () => appendClickedButton('ac'));
 
 var button_del = document.getElementById('button_del');
 button_del.addEventListener('click', () => appendClickedButton('del'));
-
