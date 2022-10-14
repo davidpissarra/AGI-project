@@ -17,8 +17,8 @@ router.get('/api/calculator/secret', (req, res) => {
   res.json({ secret: process.env.MY_SECRET })
 })
 
-router.get('/api/calculator/add', (req, res) => {
-  var operationResult = parseFloat(req.query.arg1) + parseFloat(req.query.arg2);
+router.get('/api/calculator/mult', (req, res) => {
+  var operationResult = parseFloat(req.query.arg1) * parseFloat(req.query.arg2);
   res.json({ result: operationResult});
 })
 

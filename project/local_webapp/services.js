@@ -1,4 +1,7 @@
-import ExpressionService from './services/ExpressionService.js'
+import AddService from './services/AddService.js'
+import SubService from './services/SubService.js'
+import MultService from './services/MultService.js'
+import DivService from './services/DivService.js'
 
 var expression = ''
 var display = document.getElementById('display');
@@ -12,17 +15,32 @@ async function appendClickedButton(b) {
     } else if (b === '='){
         var ops = ["+", "-", "/", "*"]
         var hasOp = false
-        for(const op of ops) {
+        for(var op of ops) { // var (?)
             if(expression.includes(op)) {
                 hasOp = true
                 break
             }
         }
         if(!hasOp) {return}
-        var arr = expression.split("+")
-        var arg1 = arr[0]
-        var arg2 = arr[1]
-        const response = await ExpressionService.getExpressionResult(arg1, arg2);
+
+        const arr = expression.split(op)
+        switch(op) {
+            case '+':
+                var response = await AddService.getAddResult(arr[0], arr[1]);
+                break;
+            case '-':
+                var response = await SubService.getSubResult(arr[0], arr[1]);
+                break;
+            case '*':
+                var response = await MultService.getMultResult(arr[0], arr[1]);
+                break;
+            case '/':
+                var response = await DivService.getDivResult(arr[0], arr[1]);
+                break;
+            default:
+                // code block
+                break; // Maybe we should consider insert something here, but may not even run this block
+          }
         expression = response.data.result.toString()
     } else if (b === '+') {
         var ops = ["+", "-", "/", "*"]
