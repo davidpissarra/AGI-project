@@ -16,7 +16,7 @@ resource "google_compute_instance" "web" {
         initialize_params {
           # image list can be found at:
           # https://cloud.google.com/compute/docs/images
-          image = "ubuntu-2004-bionic-XXXXXXXX"
+          image = "ubuntu-2004-focal-v20221015"
         }
     }
 
@@ -43,7 +43,7 @@ resource "google_compute_instance" "balancer" {
         initialize_params {
           # image list can be found at:
           # https://cloud.google.com/compute/docs/images
-          image = "ubuntu-2004-bionic-XXXXXXXX"
+          image = "ubuntu-2004-focal-v20221015"
         }
     }
 
