@@ -1,0 +1,97 @@
+# {{ ansible_managed }}
+
+#---------------------------------------------------------------------
+# Global settings
+#---------------------------------------------------------------------
+global
+  log /dev/log  local0
+  log /dev/log  local1 notice
+  chroot        /var/lib/haproxy
+  stats socket  /var/lib/haproxy/stats level admin
+  user root
+	group root
+  daemon
+#---------------------------------------------------------------------
+# common defaults that all the 'frontend' and 'backend' sections will
+# use if not designated in their block
+#---------------------------------------------------------------------
+defaults
+  log    global
+  mode   http
+  option httplog
+  option dontlognull
+  option forwardfor except 127.0.0.0/8
+  option redispatch
+  retries 3
+  timeout http-request    5s
+  timeout queue           1m
+  timeout http-keep-alive 5s
+  timeout check           10s
+  timeout connect  5000
+  timeout client   50000
+  timeout server   50000
+  errorfile 400 /etc/haproxy/errors/400.http
+  errorfile 403 /etc/haproxy/errors/403.http
+  errorfile 408 /etc/haproxy/errors/408.http
+  errorfile 500 /etc/haproxy/errors/500.http
+  errorfile 502 /etc/haproxy/errors/502.http
+  errorfile 503 /etc/haproxy/errors/503.http
+  errorfile 504 /etc/haproxy/errors/504.http
+
+#---------------------------------------------------------------------
+# FrontEnd Configuration
+#---------------------------------------------------------------------
+frontend hafrontend
+  bind *:80
+  mode http
+
+  acl add_url path -i -m beg /add
+  use_backend add if add_url
+
+  acl sub_url path -i -m beg /sub
+  use_backend sub if sub_url
+
+  acl mult_url path -i -m beg /mult
+  use_backend mult if mult_url
+
+  acl div_url path -i -m beg /div
+  use_backend div if div_url
+
+  default_backend add
+
+#---------------------------------------------------------------------
+# BackEnd roundrobin as balance algorithm
+#---------------------------------------------------------------------
+backend add
+  balance roundrobin
+  mode http
+  {% for host in groups['web_add'] %}
+    server {{ host }} {{ hostvars[host]['ansible_default_ipv4']['address'] }}:3000 check
+  {% endfor %}
+
+backend sub
+  balance roundrobin
+  mode http
+  {% for host in groups['web_sub'] %}
+    server {{ host }} {{ hostvars[host]['ansible_default_ipv4']['address'] }}:3000 check
+  {% endfor %}
+
+backend mult
+  balance roundrobin
+  mode http
+  {% for host in groups['web_mult'] %}
+    server {{ host }} {{ hostvars[host]['ansible_default_ipv4']['address'] }}:3000 check
+  {% endfor %}
+
+backend div
+  balance roundrobin
+  mode http
+  {% for host in groups['web_div'] %}
+    server {{ host }} {{ hostvars[host]['ansible_default_ipv4']['address'] }}:3000 check
+  {% endfor %}
+
+#---------------------------------------------------------------------
+# HAProxy Monitoring Config URI
+#---------------------------------------------------------------------
+  stats enable
+  stats uri /haproxy?stats

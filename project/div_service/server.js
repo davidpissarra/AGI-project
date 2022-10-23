@@ -4,8 +4,8 @@ var indexRouter = require('./routes/index');
 
 app.use('/', indexRouter);
 
-app.listen(3003, function () {
-    console.log('Server running in port 3003..');
+app.listen(3000, function () {
+    console.log('Server running in port 3000..');
 });
 
 module.exports = indexRouter;

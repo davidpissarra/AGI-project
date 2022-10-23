@@ -9,15 +9,15 @@ router.use(function(req, res, next) {
 });
 
 /* GET home page. */
-router.get('/api/calculator', function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.render('index', { title: 'Calculator' });
 });
 
-router.get('/api/calculator/secret', (req, res) => {
+router.get('/secret', (req, res) => {
   res.json({ secret: process.env.MY_SECRET })
 })
 
-router.get('/api/calculator/div', (req, res) => {
+router.get('/div', (req, res) => {
   var operationResult = parseFloat(req.query.arg1) / parseFloat(req.query.arg2);
   res.json({ result: operationResult});
 })
