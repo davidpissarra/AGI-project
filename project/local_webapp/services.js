@@ -3,65 +3,109 @@ import SubService from './services/SubService.js'
 import MultService from './services/MultService.js'
 import DivService from './services/DivService.js'
 
-var expression = ''
+var arg1 = '';
+var arg2 = '';
+var op = '';
+var clickedEquals = false;
+var negativeFirst = false;
 var display = document.getElementById('display');
-display.textContent = ''
+display.textContent = '';
 
 async function appendClickedButton(b) {
-    if(b === 'del') {
-        expression = expression.slice(0,-1)
+    if (b === 'del') {
+        if (arg2 !== '') {
+            arg2 = arg2.slice(0, -1)
+        } else if (op !== '') {
+            op = op.slice(0, -1)
+        } else {
+            arg1 = arg1.slice(0, -1)
+        }
+
+        clickedEquals = false;
+
     } else if(b === 'ac') {
-        expression = ''
+        arg1 = ''
+        arg2 = ''
+        op = ''
+
+        clickedEquals = false;
+
     } else if (b === '='){
         var ops = ["+", "-", "/", "*"]
-        var hasOp = false
-        for(var op of ops) { // var (?)
-            if(expression.includes(op)) {
-                hasOp = true
-                break
-            }
-        }
-        if(!hasOp) {return}
+        if (!ops.includes(op) || arg2 === '') { return }
 
-        const arr = expression.split(op)
-        switch(op) {
+        switch (op) {
             case '+':
-                var response = await AddService.getAddResult(arr[0], arr[1]);
+                var response = await AddService.getAddResult(arg1, arg2);
                 break;
             case '-':
-                var response = await SubService.getSubResult(arr[0], arr[1]);
+                var response = await SubService.getSubResult(arg1, arg2);
                 break;
             case '*':
-                var response = await MultService.getMultResult(arr[0], arr[1]);
+                var response = await MultService.getMultResult(arg1, arg2);
                 break;
             case '/':
-                var response = await DivService.getDivResult(arr[0], arr[1]);
+                var response = await DivService.getDivResult(arg1, arg2);
                 break;
             default:
-                // code block
-                break; // Maybe we should consider insert something here, but may not even run this block
+                break;
           }
-        expression = response.data.result.toString()
+
+        arg1 = response.data.result.toString()
+        arg2 = ''
+        op = ''
+        clickedEquals = true
+
     } else if (b === '+') {
         var ops = ["+", "-", "/", "*"]
-        for(const op of ops) {if(expression.includes(op)) return}
-        expression = expression + '+'
+        if (ops.includes(op) || arg1 === '' || arg1 === '-') { return }
+
+        op = '+'
+        clickedEquals = false
+
     } else if (b === '-') {
         var ops = ["+", "-", "/", "*"]
-        for(const op of ops) {if(expression.includes(op)) return}
-        expression = expression + '-'
+
+        if (arg1 === '') { arg1 = arg1 + '-' }
+        else if (arg2 === '' && ops.includes(op)) {   // previous char was op
+            arg2 = arg2 + '-'
+        } else {
+            if (ops.includes(op) || arg1 === '-') { return }
+            op = '-'
+        }
+
+        clickedEquals = false
+
     } else if (b === '*') {
         var ops = ["+", "-", "/", "*"]
-        for(const op of ops) {if(expression.includes(op)) return}
-        expression = expression + '*'
+        if (ops.includes(op) || arg1 === '' || arg1 === '-') { return }
+
+        op = '*'
+        clickedEquals = false
+
     } else if (b === '/') {
         var ops = ["+", "-", "/", "*"]
-        for(const op of ops) {if(expression.includes(op)) return}
-        expression = expression + '/'
+        if (ops.includes(op) || arg1 === '' || arg1 === '-') { return }
+
+        op = '/'
+        clickedEquals = false
+
     } else {
-        expression = expression + b
+        if (clickedEquals) {
+            arg1 = '' + b
+            clickedEquals = false
+
+        } else {
+            var ops = ["+", "-", "/", "*"]
+            if (ops.includes(op)) {
+                arg2 = arg2 + b
+            } else {
+                arg1 = arg1 + b
+            }
+        }
     }
-    display.textContent = expression
+
+    display.textContent = arg1 + op + arg2
 }
 
 
