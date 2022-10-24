@@ -4,8 +4,8 @@ var app = express();
 var bodyParser = require("body-parser");
 app.use(express.static('./'));
 
-app.listen(4000, function () {
-    console.log('Server running in port 4000..');
+app.listen(80, function () {
+    console.log('Server running in port 80..');
 });
 
 app.get('/', function (req, res) {

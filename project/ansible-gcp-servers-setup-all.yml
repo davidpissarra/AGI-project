@@ -40,7 +40,7 @@
     # Install nodejs and npm on servers
     - name: install nodejs and npm
       apt:
-        pkg: 
+        pkg:
           - nodejs
           - npm
         state: latest
@@ -54,7 +54,7 @@
   become: yes
   become_method: sudo
 
-  tasks:          
+  tasks:
     - name: Add NGINX Repository
       apt_repository:
         repo: ppa:nginx/stable
@@ -65,18 +65,25 @@
         pkg: nginx
         state: present
 
-    - name: copy directory 
-      copy: 
+    - name: copy directory
+      copy:
         src: /home/vagrant/project/add_service
         dest: /
 
     - name: install npm dependencies
       command: chdir=/add_service npm i
 
+    - name: install forever
+      npm: name=forever global=yes state=present
+
+    - name: check running node.js apps
+      command: forever list
+      register: forever_list
+      changed_when: false
+
     - name: start server
-      command: chdir=/add_service node server.js
-      async: 31556926
-      poll: 0
+      command: chdir=/add_service forever start server.js
+      when: "forever_list.stdout.find('/add_service/server.js') == -1"
 
   # The handler is common to the nginx installation steps
   handlers:
@@ -102,19 +109,26 @@
         pkg: nginx
         state: present
 
-    - name: copy directory 
-      copy: 
+    - name: copy directory
+      copy:
         src: /home/vagrant/project/sub_service
         dest: /
 
     - name: install npm dependencies
       command: chdir=/sub_service npm i
 
+    - name: install forever
+      npm: name=forever global=yes state=present
+
+    - name: check running node.js apps
+      command: forever list
+      register: forever_list
+      changed_when: false
+
     - name: start server
-      command: chdir=/sub_service node server.js
-      async: 31556926
-      poll: 0
-  
+      command: chdir=/sub_service forever start server.js
+      when: "forever_list.stdout.find('/sub_service/server.js') == -1"
+
   # The handler is common to the nginx installation steps
   handlers:
     - name: restart nginx
@@ -139,19 +153,26 @@
         pkg: nginx
         state: present
 
-    - name: copy directory 
-      copy: 
+    - name: copy directory
+      copy:
         src: /home/vagrant/project/mult_service
         dest: /
 
     - name: install npm dependencies
       command: chdir=/mult_service npm i
 
+    - name: install forever
+      npm: name=forever global=yes state=present
+
+    - name: check running node.js apps
+      command: forever list
+      register: forever_list
+      changed_when: false
+
     - name: start server
-      command: chdir=/mult_service node server.js
-      async: 31556926
-      poll: 0
-  
+      command: chdir=/mult_service forever start server.js
+      when: "forever_list.stdout.find('/mult_service/server.js') == -1"
+
   # The handler is common to the nginx installation steps
   handlers:
     - name: restart nginx
@@ -177,18 +198,25 @@
         pkg: nginx
         state: present
 
-    - name: copy directory 
-      copy: 
+    - name: copy directory
+      copy:
         src: /home/vagrant/project/div_service
         dest: /
 
     - name: install npm dependencies
       command: chdir=/div_service npm i
 
+    - name: install forever
+      npm: name=forever global=yes state=present
+
+    - name: check running node.js apps
+      command: forever list
+      register: forever_list
+      changed_when: false
+
     - name: start server
-      command: chdir=/div_service node server.js
-      async: 31556926
-      poll: 0
+      command: chdir=/div_service forever start server.js
+      when: "forever_list.stdout.find('/div_service/server.js') == -1"
 
   # The handler is common to the nginx installation steps
   handlers:
@@ -205,7 +233,7 @@
   become_method: sudo
 
   tasks:
-    # as there is no internal DNS service, we need to populate theb /etc/hosts
+    # As there is no internal DNS service, we need to populate /etc/hosts
     - name: update /etc/hosts file for name resolution of self
       lineinfile:
         dest: /etc/hosts
@@ -213,7 +241,7 @@
         line: "127.0.0.1 {{item}}"
         state: present
       with_items: balancer
-    # as there is no internal DNS service, we need to populate the /etc/hosts
+    # As there is no internal DNS service, we need to populate /etc/hosts
     - name: update /etc/hosts file for name resolution
       lineinfile:
         dest: /etc/hosts
@@ -222,7 +250,7 @@
         state: present
       when: hostvars[item]['ansible_default_ipv4']['address'] is defined
       with_items: '{{groups.web}}'
-    
+
     - name: add HAPROXY Repository
       apt_repository:
         repo: ppa:vbernat/haproxy-2.1
@@ -254,18 +282,25 @@
         state: started
         enabled: yes
 
-    - name: copy directory 
-      copy: 
+    - name: copy directory
+      copy:
         src: /home/vagrant/project/local_webapp
         dest: /
-    
+
     - name: install npm dependencies
       command: chdir=/local_webapp npm i
 
+    - name: install forever
+      npm: name=forever global=yes state=present
+
+    - name: check running node.js apps
+      command: forever list
+      register: forever_list
+      changed_when: false
+
     - name: start server
-      command: chdir=/local_webapp node server.js
-      async: 31556926
-      poll: 0
+      command: chdir=/local_webapp forever start server.js
+      when: "forever_list.stdout.find('/local_webapp/server.js') == -1"
 
   # The handler is common to the nginx installation steps
   handlers:
@@ -274,6 +309,3 @@
     service:
       name: haproxy
       state: restarted
-    
-
-    
