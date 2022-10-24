@@ -8,8 +8,22 @@ var arg2 = '';
 var op = '';
 var clickedEquals = false;
 var negativeFirst = false;
+// Might be needed for storing
+var calcList = [];
 var display = document.getElementById('display');
 display.textContent = '';
+
+
+function addToHistory(first, operation, last, result) {
+    // Stores locally for now
+    var ul = document.getElementById('calculation_list');
+    var total = first + operation + last + "=" + result;
+    var li = document.createElement('li');
+    li.appendChild(document.createTextNode(total));
+    //li.innerText = total;
+    ul.appendChild(li);
+}
+
 
 async function appendClickedButton(b) {
     if (b === 'del') {
@@ -50,8 +64,9 @@ async function appendClickedButton(b) {
             default:
                 break;
           }
-
-        arg1 = response.data.result.toString()
+        var result = response.data.result.toString()
+        addToHistory(arg1, op, arg2, result)
+        arg1 = result
         arg2 = ''
         op = ''
         clickedEquals = true
@@ -107,6 +122,8 @@ async function appendClickedButton(b) {
 
     display.textContent = arg1 + op + arg2
 }
+
+
 
 
 var number1 = document.getElementById('button0');
