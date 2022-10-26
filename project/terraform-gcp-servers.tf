@@ -4,6 +4,19 @@
 # syntax is: resource RESOURCE_TYPE RESOURCE_NAME
 # https://www.terraform.io/docs/configuration/resources.html
 
+########### Redis  ###################
+
+resource "google_redis_instance" "db" {
+  name           = "db"
+  tier           = "STANDARD_HA"
+  memory_size_gb = 2
+  region         = "europe-west3"
+  redis_version  = "REDIS_6_X"
+}
+
+
+
+
 ###########  Web Servers   #############
 # This method creates as many identical instances as the "count" index value
 resource "google_compute_instance" "web" {

@@ -14,3 +14,8 @@ output "balancer_ssh" {
 output "web_IPs"  {
   value = formatlist("%s = %s", google_compute_instance.web[*].name, google_compute_instance.web[*].network_interface.0.access_config.0.nat_ip)
 }
+
+output "db_IP" {
+ description = "The IP address of the instance."
+ value = "${google_redis_instance.db.host}"
+}

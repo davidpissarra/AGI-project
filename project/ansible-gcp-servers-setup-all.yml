@@ -60,6 +60,15 @@
         repo: ppa:nginx/stable
         state: present
 
+    - name: update /etc/hosts file for name resolution
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "{{ hostvars[item]['ansible_host'] }} {{item}}"
+        state: present
+      when: hostvars[item]['ansible_host'] is defined
+      with_items: '{{groups.redis}}'
+
     - name: install nginx
       apt:
         pkg: nginx
@@ -103,6 +112,15 @@
       apt_repository:
         repo: ppa:nginx/stable
         state: present
+
+    - name: update /etc/hosts file for name resolution
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "{{ hostvars[item]['ansible_host'] }} {{item}}"
+        state: present
+      when: hostvars[item]['ansible_host'] is defined
+      with_items: '{{groups.redis}}'
 
     - name: install nginx
       apt:
@@ -148,6 +166,15 @@
         repo: ppa:nginx/stable
         state: present
 
+    - name: update /etc/hosts file for name resolution
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "{{ hostvars[item]['ansible_host'] }} {{item}}"
+        state: present
+      when: hostvars[item]['ansible_host'] is defined
+      with_items: '{{groups.redis}}'
+
     - name: install nginx
       apt:
         pkg: nginx
@@ -192,6 +219,16 @@
       apt_repository:
         repo: ppa:nginx/stable
         state: present
+
+    - name: update /etc/hosts file for name resolution
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "{{ hostvars[item]['ansible_host'] }} {{item}}"
+        state: present
+      when: hostvars[item]['ansible_host'] is defined
+      with_items: '{{groups.redis}}'
+
 
     - name: install nginx
       apt:
@@ -251,6 +288,8 @@
       when: hostvars[item]['ansible_default_ipv4']['address'] is defined
       with_items: '{{groups.web}}'
 
+    
+      
     - name: add HAPROXY Repository
       apt_repository:
         repo: ppa:vbernat/haproxy-2.1
