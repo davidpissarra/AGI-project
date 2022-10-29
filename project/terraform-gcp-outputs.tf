@@ -6,8 +6,12 @@ output "balancer" {
     value = join(" ", google_compute_instance.balancer.*.network_interface.0.access_config.0.nat_ip)
 }
 
-output "balancer_ssh" {
- value = google_compute_instance.balancer.self_link
+output "prometheus" {
+    value = join(" ", google_compute_instance.prometheus.*.network_interface.0.access_config.0.nat_ip)
+}
+
+output "grafana" {
+    value = join(" ", google_compute_instance.grafana.*.network_interface.0.access_config.0.nat_ip)
 }
 
 # example for a set of identical instances created with "count"

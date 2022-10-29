@@ -4,7 +4,7 @@
 # Name of the project, replace "XX" for your
 # respective group ID
 variable "GCP_PROJECT_ID" {
-    default = "project-simulation-366120"
+    default = "project-sim-367015"
 }
 
 # A list of machine types is found at:
@@ -22,9 +22,4 @@ variable "GCP_MACHINE_TYPE" {
 # Compute Engine dashboard -> VM instances -> Zone
 variable "GCP_ZONE" {
     default = "europe-west3-c"
-}
-
-# Minimum required
-variable "DISK_SIZE" {
-    default = "15"
 }

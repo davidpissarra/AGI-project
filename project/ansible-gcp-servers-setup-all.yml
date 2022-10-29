@@ -37,6 +37,14 @@
     # Update repo
     - name: Update apt repo and cache
       apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+- hosts: web_targets
+  gather_facts: True
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+
+  tasks:
     # Install nodejs and npm on servers
     - name: install nodejs and npm
       apt:
@@ -45,10 +53,26 @@
           - npm
         state: latest
 
-# This Second Play installs the required software in web servers
+- hosts: web
+  gather_facts: True
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+
+  tasks:
+    - name: update /etc/hosts file for name resolution
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "{{ hostvars[item]['ansible_host'] }} {{item}}"
+        state: present
+      when: hostvars[item]['ansible_host'] is defined
+      with_items: '{{groups.redis}}'
+
+# This play installs the required software in web servers
 # tasks names are self explanatory
 
-- hosts: web1
+- hosts: web_add
   gather_facts: True
   remote_user: ubuntu
   become: yes
@@ -59,15 +83,6 @@
       apt_repository:
         repo: ppa:nginx/stable
         state: present
-
-    - name: update /etc/hosts file for name resolution
-      lineinfile:
-        dest: /etc/hosts
-        regexp: '.*{{ item }}$'
-        line: "{{ hostvars[item]['ansible_host'] }} {{item}}"
-        state: present
-      when: hostvars[item]['ansible_host'] is defined
-      with_items: '{{groups.redis}}'
 
     - name: install nginx
       apt:
@@ -101,7 +116,7 @@
         name: nginx
         state: restarted
 
-- hosts: web2
+- hosts: web_sub
   gather_facts: True
   remote_user: ubuntu
   become: yes
@@ -112,15 +127,6 @@
       apt_repository:
         repo: ppa:nginx/stable
         state: present
-
-    - name: update /etc/hosts file for name resolution
-      lineinfile:
-        dest: /etc/hosts
-        regexp: '.*{{ item }}$'
-        line: "{{ hostvars[item]['ansible_host'] }} {{item}}"
-        state: present
-      when: hostvars[item]['ansible_host'] is defined
-      with_items: '{{groups.redis}}'
 
     - name: install nginx
       apt:
@@ -154,7 +160,7 @@
         name: nginx
         state: restarted
 
-- hosts: web3
+- hosts: web_mult
   gather_facts: True
   remote_user: ubuntu
   become: yes
@@ -165,15 +171,6 @@
       apt_repository:
         repo: ppa:nginx/stable
         state: present
-
-    - name: update /etc/hosts file for name resolution
-      lineinfile:
-        dest: /etc/hosts
-        regexp: '.*{{ item }}$'
-        line: "{{ hostvars[item]['ansible_host'] }} {{item}}"
-        state: present
-      when: hostvars[item]['ansible_host'] is defined
-      with_items: '{{groups.redis}}'
 
     - name: install nginx
       apt:
@@ -207,7 +204,7 @@
         name: nginx
         state: restarted
 
-- hosts: web4
+- hosts: web_div
   gather_facts: True
   remote_user: ubuntu
   become: yes
@@ -219,16 +216,6 @@
       apt_repository:
         repo: ppa:nginx/stable
         state: present
-
-    - name: update /etc/hosts file for name resolution
-      lineinfile:
-        dest: /etc/hosts
-        regexp: '.*{{ item }}$'
-        line: "{{ hostvars[item]['ansible_host'] }} {{item}}"
-        state: present
-      when: hostvars[item]['ansible_host'] is defined
-      with_items: '{{groups.redis}}'
-
 
     - name: install nginx
       apt:
@@ -262,6 +249,64 @@
         name: nginx
         state: restarted
 
+# populate prometheus /etc/hosts file
+- hosts: prometheus
+  gather_facts: true
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+
+  tasks:
+    # As there is no internal DNS service, we need to populate /etc/hosts
+    - name: update /etc/hosts file for name resolution of self
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "127.0.0.1 {{item}}"
+        state: present
+      with_items: prometheus
+    - name: update /etc/hosts file for name resolution
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "{{ hostvars[item]['ansible_default_ipv4']['address'] }} {{item}}"
+        state: present
+      when: hostvars[item]['ansible_default_ipv4']['address'] is defined
+      with_items: '{{groups.web_targets}}'
+
+# populate grafana /etc/hosts file
+- hosts: grafana
+  gather_facts: true
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+
+  tasks:
+    # As there is no internal DNS service, we need to populate /etc/hosts
+    - name: update /etc/hosts file for name resolution of self
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "127.0.0.1 {{item}}"
+        state: present
+      with_items: grafana
+    - name: update /etc/hosts file for name resolution
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "{{ hostvars[item]['ansible_default_ipv4']['address'] }} {{item}}"
+        state: present
+      when: hostvars[item]['ansible_default_ipv4']['address'] is defined
+      with_items: '{{groups.web_targets}}'
+    - name: update /etc/hosts file for name resolution
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "{{ hostvars[item]['ansible_default_ipv4']['address'] }} {{item}}"
+        state: present
+      when: hostvars[item]['ansible_default_ipv4']['address'] is defined
+      with_items: prometheus
+
 # This Third Play install the required software in the Load Balancer
 - hosts: loadbal
   gather_facts: true
@@ -286,9 +331,7 @@
         line: "{{ hostvars[item]['ansible_default_ipv4']['address'] }} {{item}}"
         state: present
       when: hostvars[item]['ansible_default_ipv4']['address'] is defined
-      with_items: '{{groups.web}}'
-
-    
+      with_items: '{{groups.web}}'    
       
     - name: add HAPROXY Repository
       apt_repository:
