@@ -10,7 +10,7 @@ resource "google_redis_instance" "db" {
   name           = "db"
   tier           = "STANDARD_HA"
   memory_size_gb = 2
-  region         = "europe-west3" 
+  region         = "europe-west1" 
   redis_version  = "REDIS_6_X"
 }
 

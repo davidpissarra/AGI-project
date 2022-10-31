@@ -19,15 +19,18 @@ router.get('/secret', (req, res) => {
 
 router.get('/add', (req, res) => {
   var operationResult = parseFloat(req.query.arg1) + parseFloat(req.query.arg2);
+  var operation = req.query.arg1 + ' + ' + req.query.arg2 + ' = ' + operationResult
   var idOfClient = req.query.clientId;
+
   try {
-    if (ip === '') {
       dns.lookup('db', function(err, address, family) {
-        res.json({ result: operationResult, clientId: idOfClient, prev: [operationResult] });
+        var previous = [];
+        previous[0] = operation;
+
+        res.json({ result: operationResult, clientId: idOfClient, prev: previous.toString() });
       });
-    }
   } catch (error) {
-    res.json({ result: operationResult, clientId: idOfClient, prev: [] });
+    res.json({ result: operationResult, clientId: idOfClient, prev: '' });
   }
 })
 

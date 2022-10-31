@@ -81,12 +81,13 @@ async function appendClickedButton(b) {
                 break;
         }
 
+        console.log("[+] Client ID: " + response.data.clientId)
+        console.log("[+] Previous operation(s): " + response.data.prev)
+
         var result = response.data.result.toString()
 
-        console.log("Client ID:  " + response.data.clientId.toString())
-        console.log("Previous operation:  " + response.data.prev.toString())
+        addToHistory(arg1, op, arg2, result)    // prev with redis
 
-        addToHistory(arg1, op, arg2, result)
         arg1 = result
         arg2 = ''
         op = ''
