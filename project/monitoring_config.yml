@@ -1,0 +1,70 @@
+---
+# node exporter configuration
+- hosts: targets
+  any_errors_fatal: true
+  roles:
+    - cloudalchemy.node_exporter
+  vars:
+    node_exporter_web_listen_address: "0.0.0.0:9100"
+
+# prometheus configuration
+- hosts: prometheus
+  gather_facts: true
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+
+  roles:
+  - cloudalchemy.prometheus
+  vars:
+    prometheus_scrape_configs:
+      - job_name: "Prometheus"
+        metrics_path: "/metrics"
+        static_configs:
+          - targets:
+            - "prometheus:9100"
+
+      - job_name: "Add Servers"
+        metrics_path: "/metrics"
+        static_configs:
+          - targets:
+            - "web1:9100"
+
+      - job_name: "Sub Servers"
+        metrics_path: "/metrics"
+        static_configs:
+          - targets:
+            - "web2:9100"
+
+      - job_name: "Mult Servers"
+        metrics_path: "/metrics"
+        static_configs:
+          - targets:
+            - "web3:9100"
+            
+      - job_name: "Div Servers"
+        metrics_path: "/metrics"
+        static_configs:
+          - targets:
+            - "web4:9100"
+
+# grafana configuration
+- hosts: grafana
+  any_errors_fatal: true
+  
+  roles:
+  - cloudalchemy.grafana
+  vars:
+    grafana_security:
+      admin_user: admin
+      admin_password: "password"
+    grafana_datasources:
+      - name: prometheus
+        type: prometheus
+        access: proxy
+        url: 'http://prometheus:9090'
+        basicAuth: false
+    grafana_dashboards:
+      - dashboard_id: 1860
+        revision_id: 27
+        datasource: prometheus

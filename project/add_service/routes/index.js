@@ -24,8 +24,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/secret', (req, res) => {
-  res.json({ secret: process.env.MY_SECRET })
-})
+  res.json({ secret: process.env.MY_SECRET });
+});
 
 router.get('/add', (req, res) => {
   var operationResult = parseFloat(req.query.arg1) + parseFloat(req.query.arg2);
