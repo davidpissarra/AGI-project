@@ -13,6 +13,8 @@ var calcList = [];
 var display = document.getElementById('display');
 display.textContent = '';
 
+var clientId = '';
+
 
 function addToHistory(first, operation, last, result) {
     // Stores locally for now
@@ -22,6 +24,19 @@ function addToHistory(first, operation, last, result) {
     li.appendChild(document.createTextNode(total));
     //li.innerText = total;
     ul.appendChild(li);
+}
+
+function uuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+function processId(){
+    if(clientId === ''){
+        clientId = uuid();
+    }
 }
 
 
@@ -47,24 +62,25 @@ async function appendClickedButton(b) {
     } else if (b === '='){
         var ops = ["+", "-", "/", "*"]
         if (!ops.includes(op) || arg2 === '') { return }
-
+        processId();
         switch (op) {
             case '+':
-                var response = await AddService.getAddResult(arg1, arg2);
+                var response = await AddService.getAddResult(arg1, arg2, clientId);
                 break;
             case '-':
-                var response = await SubService.getSubResult(arg1, arg2);
+                var response = await SubService.getSubResult(arg1, arg2, clientId);
                 break;
             case '*':
-                var response = await MultService.getMultResult(arg1, arg2);
+                var response = await MultService.getMultResult(arg1, arg2, clientId);
                 break;
             case '/':
-                var response = await DivService.getDivResult(arg1, arg2);
+                var response = await DivService.getDivResult(arg1, arg2, clientId);
                 break;
             default:
                 break;
           }
         var result = response.data.result.toString()
+        console.log("Client id:  " + response.data.clientId.toString() + " Redis ip: " + response.data.redisIp.toString())
         addToHistory(arg1, op, arg2, result)
         arg1 = result
         arg2 = ''
