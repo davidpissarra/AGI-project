@@ -4,7 +4,7 @@
 # Name of the project, replace "XX" for your
 # respective group ID
 variable "GCP_PROJECT_ID" {
-    default = "project-sim-367015"
+    default = "project-agisit"
 }
 
 # A list of machine types is found at:

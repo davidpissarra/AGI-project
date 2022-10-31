@@ -62,6 +62,7 @@ async function appendClickedButton(b) {
     } else if (b === '='){
         var ops = ["+", "-", "/", "*"]
         if (!ops.includes(op) || arg2 === '') { return }
+
         processId();
         switch (op) {
             case '+':
@@ -78,9 +79,13 @@ async function appendClickedButton(b) {
                 break;
             default:
                 break;
-          }
+        }
+
         var result = response.data.result.toString()
-        console.log("Client id:  " + response.data.clientId.toString() + " Redis ip: " + response.data.redisIp.toString())
+
+        console.log("Client ID:  " + response.data.clientId.toString())
+        console.log("Previous operation:  " + response.data.prev.toString())
+
         addToHistory(arg1, op, arg2, result)
         arg1 = result
         arg2 = ''

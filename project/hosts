@@ -3,14 +3,14 @@
 
 # Modify the line with the ansible_host for the public IP address of your Tenant
 # For that, un-comment the following line before running instances configuration
-balancer    ansible_host=34.89.212.17  ansible_user=ubuntu ansible_connection=ssh
-prometheus  ansible_host=34.107.125.46  ansible_user=ubuntu ansible_connection=ssh
-grafana     ansible_host=34.141.56.193  ansible_user=ubuntu ansible_connection=ssh
-web1        ansible_host=34.141.16.205  ansible_user=ubuntu ansible_connection=ssh
-web2        ansible_host=34.107.94.3   ansible_user=ubuntu ansible_connection=ssh
-web3        ansible_host=34.89.198.77    ansible_user=ubuntu ansible_connection=ssh
-web4        ansible_host=34.159.146.67 ansible_user=ubuntu ansible_connection=ssh
-db          ansible_host=10.214.137.148   ansible_user=ubuntu ansible_connection=ssh
+balancer    ansible_host=34.89.209.125  ansible_user=ubuntu ansible_connection=ssh
+prometheus  ansible_host=34.141.58.226  ansible_user=ubuntu ansible_connection=ssh
+grafana     ansible_host=34.141.77.212  ansible_user=ubuntu ansible_connection=ssh
+web1        ansible_host=35.198.174.51  ansible_user=ubuntu ansible_connection=ssh
+web2        ansible_host=34.159.204.142 ansible_user=ubuntu ansible_connection=ssh
+web3        ansible_host=35.246.131.72  ansible_user=ubuntu ansible_connection=ssh
+web4        ansible_host=34.107.17.88   ansible_user=ubuntu ansible_connection=ssh
+db          ansible_host=10.176.176.156 ansible_user=ubuntu ansible_connection=ssh
 
 # The local deployment host VM
 [osmgmt]
