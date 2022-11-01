@@ -1,82 +1,16 @@
-#!/usr/bin/env bash
-
-export DEBIAN_FRONTEND=noninteractive
-
-sudo apt-get update
-sudo apt-get -y upgrade
-
-sudo apt-get -y install nano less iptables iputils-ping
-
-# install tools for managing ppa repositories
-sudo apt-get -y install software-properties-common
-sudo apt-get -y install unzip
-sudo apt-get -y install build-essential
-# 
-sudo apt-get -y install libssl-dev 
-sudo apt-get -y install libffi-dev 
-# required for Openstack SDK
-sudo apt-get -y install python3-dev 
-sudo apt-get -y install python3-pip
-
-# Add graph builder tool for Terraform
-sudo apt-get -y install graphviz
-
-# install Ansible (http://docs.ansible.com/intro_installation.html)
-sudo apt-add-repository -y -u ppa:ansible/ansible
-sudo apt-get update
-sudo apt-get -y install ansible
-
-# Install Terraform
-sudo apt-get update
-# install GNU Privacy Guard
-sudo apt-get install -y gnupg
-# add HashiCorp GPG key
-curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-sudo apt-get update
-sudo apt-get -y install terraform
-
-# install OpenStack SDK modules
-pip install python-openstackclient
-
-# Install Google Cloud SDK
-snap install google-cloud-sdk --classic
-
-# Install Kubernetes Controller
-sudo apt-get -y install kubectl google-cloud-sdk-gke-gcloud-auth-plugin
-
-# Install Amazon AWS-CLI
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo ./aws/install
-
-# Clean up cached packages
-sudo apt-get clean all
-sudo rm ./awscliv2.zip
-
 # node exporter configuration
 git clone https://github.com/cloudalchemy/ansible-node-exporter.git
-cd ansible-node-exporter
-mkdir -p roles/cloudalchemy.node_exporter
-mv defaults/ handlers/ meta/ molecule/ tasks/ templates/ vars/ roles/cloudalchemy.node_exporter/
-export ANSIBLE_ROLES_PATH=$ANSIBLE_ROLES_PATH:/home/vagrant/ansible-node-exporter/roles
-echo 'export ANSIBLE_ROLES_PATH=$ANSIBLE_ROLES_PATH:/home/vagrant/ansible-node-exporter/roles' >> ~/.bashrc
-cd ~
+mkdir -p ansible-node-exporter/roles/cloudalchemy.node_exporter
+mv ansible-node-exporter/defaults/ ansible-node-exporter/handlers/ ansible-node-exporter/meta/ ansible-node-exporter/molecule/ ansible-node-exporter/tasks/ ansible-node-exporter/templates/ ansible-node-exporter/vars/ ansible-node-exporter/roles/cloudalchemy.node_exporter/
 
 # prometheus configuration
 git clone https://github.com/cloudalchemy/ansible-prometheus.git
-cd ansible-prometheus
-mkdir -p roles/cloudalchemy.prometheus
-mv defaults/ handlers/ meta/ molecule/ tasks/ templates/ vars/ roles/cloudalchemy.prometheus/
-export ANSIBLE_ROLES_PATH=$ANSIBLE_ROLES_PATH:/home/vagrant/ansible-prometheus/roles
-echo 'export ANSIBLE_ROLES_PATH=$ANSIBLE_ROLES_PATH:/home/vagrant/ansible-prometheus/roles' >> ~/.bashrc
-cd ~
+mkdir -p ansible-prometheus/roles/cloudalchemy.prometheus
+mv ansible-prometheus/defaults/ ansible-prometheus/handlers/ ansible-prometheus/meta/ ansible-prometheus/molecule/ ansible-prometheus/tasks/ ansible-prometheus/templates/ ansible-prometheus/vars/ ansible-prometheus/roles/cloudalchemy.prometheus/
 
 # grafana configuration
 git clone https://github.com/cloudalchemy/ansible-grafana.git
-cd ansible-grafana
-mkdir -p roles/cloudalchemy.grafana
-mv defaults/ handlers/ meta/ molecule/ tasks/ templates/ vars/ roles/cloudalchemy.grafana/
-export ANSIBLE_ROLES_PATH=$ANSIBLE_ROLES_PATH:/home/vagrant/ansible-grafana/roles
-echo 'export ANSIBLE_ROLES_PATH=$ANSIBLE_ROLES_PATH:/home/vagrant/ansible-grafana/roles' >> ~/.bashrc
-cd ~
+mkdir -p ansible-grafana/roles/cloudalchemy.grafana
+mv ansible-grafana/defaults/ ansible-grafana/handlers/ ansible-grafana/meta/ ansible-grafana/molecule/ ansible-grafana/tasks/ ansible-grafana/templates/ ansible-grafana/vars/ ansible-grafana/roles/cloudalchemy.grafana/
+
+echo 'export ANSIBLE_ROLES_PATH=$ANSIBLE_ROLES_PATH:/home/vagrant/ansible-node-exporter/roles:/home/vagrant/ansible-prometheus/roles:/home/vagrant/ansible-grafana/roles' >> /home/vagrant/.bashrc

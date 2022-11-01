@@ -310,6 +310,22 @@
       when: hostvars[item]['ansible_default_ipv4']['address'] is defined
       with_items: '{{groups.web_targets}}'
 
+    - name: Add NGINX Repository
+      apt_repository:
+        repo: ppa:nginx/stable
+        state: present
+    - name: install nginx
+      apt:
+        pkg: nginx
+        state: present
+
+  # The handler is common to the nginx installation steps
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+
 # populate grafana /etc/hosts file
 - hosts: grafana
   gather_facts: true
@@ -342,6 +358,22 @@
         state: present
       when: hostvars[item]['ansible_default_ipv4']['address'] is defined
       with_items: prometheus
+
+    - name: Add NGINX Repository
+      apt_repository:
+        repo: ppa:nginx/stable
+        state: present
+    - name: install nginx
+      apt:
+        pkg: nginx
+        state: present
+
+  # The handler is common to the nginx installation steps
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
 
 # This Third Play install the required software in the Load Balancer
 - hosts: loadbal
@@ -420,10 +452,9 @@
       command: chdir=/local_webapp forever start server.js
       when: "forever_list.stdout.find('/local_webapp/server.js') == -1"
 
-  # The handler is common to the nginx installation steps
+  # The handler is common to the haproxy installation steps
   handlers:
-
-  - name: restart haproxy
-    service:
-      name: haproxy
-      state: restarted
+    - name: restart haproxy
+      service:
+        name: haproxy
+        state: restarted

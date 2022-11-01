@@ -59,6 +59,16 @@ frontend hafrontend
 
   default_backend add
 
+frontend haprometheus
+  bind *:9090
+  mode http
+  default_backend prometheus_backend
+
+frontend hagrafana
+  bind *:3000
+  mode http
+  default_backend grafana_backend
+
 #---------------------------------------------------------------------
 # BackEnd roundrobin as balance algorithm
 #---------------------------------------------------------------------
@@ -89,6 +99,12 @@ backend div
   {% for host in groups['web_div'] %}
     server {{ host }} {{ hostvars[host]['ansible_default_ipv4']['address'] }}:3000 check
   {% endfor %}
+
+backend prometheus_backend
+  server prometheus {{ hostvars['prometheus']['ansible_default_ipv4']['address'] }}:9090 check
+
+backend grafana_backend
+  server grafana {{ hostvars['grafana']['ansible_default_ipv4']['address'] }}:3000 check
 
 #---------------------------------------------------------------------
 # HAProxy Monitoring Config URI

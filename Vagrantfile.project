@@ -47,6 +47,7 @@ Vagrant.configure("2") do |config|
 
     end # of shared folders
     # Provisioning with reload (reboot)
+    mgvb.vm.provision :shell, path: "bootstrap-mgmt.sh"
     mgvb.vm.provision :shell, path: "bootstrap-mgmt-project.sh"
     mgvb.vm.provision :reload
   end # of mgvb
