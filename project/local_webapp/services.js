@@ -7,14 +7,10 @@ var arg1 = '';
 var arg2 = '';
 var op = '';
 var clickedEquals = false;
-var negativeFirst = false;
-// Might be needed for storing
-var calcList = [];
 var display = document.getElementById('display');
 display.textContent = '';
 
 var clientId = '';
-
 
 function addToHistory(prev, count) {
     var ul = document.getElementById('calculation_list');
@@ -24,16 +20,17 @@ function addToHistory(prev, count) {
     for (const op in split){
         li = document.createElement('li');
         li.appendChild(document.createTextNode(split[op]));
-        //li.innerText = total;
         ul.appendChild(li);
     }
-    if(count > 5) {
+    if(count !== null && count > 5) {
         li = document.createElement('li');
         count = count - 5;
         var others = "and " + count.toString() + " more..."; 
         li.appendChild(document.createTextNode(others));
         ul.appendChild(li);
+	localStorage.setItem('count', count + 5);
     }
+    localStorage.setItem('prev', prev);
 }
 
 function uuid() {
@@ -44,9 +41,12 @@ function uuid() {
   }
 
 function processId(){
-    if(clientId === ''){
-        clientId = uuid();
+    clientId = localStorage.getItem('uuid'); 
+    if(clientId === null){
+        clientId = uuid(); 
+        localStorage.setItem('uuid', clientId)
     }
+    
 }
 
 
@@ -158,6 +158,11 @@ async function appendClickedButton(b) {
 }
 
 
+window.addEventListener('load', (event) => {
+  if (localStorage.getItem('prev') !== null){
+ 	addToHistory(localStorage.getItem('prev'), localStorage.getItem('count'));       
+  }
+});
 
 
 var number1 = document.getElementById('button0');
