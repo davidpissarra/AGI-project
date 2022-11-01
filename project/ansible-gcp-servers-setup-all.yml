@@ -97,6 +97,15 @@
     - name: install npm dependencies
       command: chdir=/add_service npm i
 
+    - name: cache clean
+      command: chdir=/add_service npm cache clean -f
+
+    - name: update npm version
+      command: chdir=/add_service npm install -g n
+
+    - name: n stable
+      command: chdir=/add_service n stable
+
     - name: install forever
       npm: name=forever global=yes state=present
 
@@ -140,6 +149,15 @@
 
     - name: install npm dependencies
       command: chdir=/sub_service npm i
+
+    - name: cache clean
+      command: chdir=/sub_service npm cache clean -f
+
+    - name: update npm version
+      command: chdir=/sub_service npm install -g n
+
+    - name: n stable
+      command: chdir=/sub_service n stable
 
     - name: install forever
       npm: name=forever global=yes state=present
@@ -185,6 +203,15 @@
     - name: install npm dependencies
       command: chdir=/mult_service npm i
 
+    - name: cache clean
+      command: chdir=/mult_service npm cache clean -f
+
+    - name: update npm version
+      command: chdir=/mult_service npm install -g n
+
+    - name: n stable
+      command: chdir=/mult_service n stable
+
     - name: install forever
       npm: name=forever global=yes state=present
 
@@ -229,6 +256,15 @@
 
     - name: install npm dependencies
       command: chdir=/div_service npm i
+
+    - name: cache clean
+      command: chdir=/div_service npm cache clean -f
+
+    - name: update npm version
+      command: chdir=/div_service npm install -g n
+
+    - name: n stable
+      command: chdir=/div_service n stable
 
     - name: install forever
       npm: name=forever global=yes state=present

@@ -16,14 +16,24 @@ display.textContent = '';
 var clientId = '';
 
 
-function addToHistory(first, operation, last, result) {
+function addToHistory(prev, count) {
     // Stores locally for now
     var ul = document.getElementById('calculation_list');
-    var total = first + operation + last + "=" + result;
-    var li = document.createElement('li');
-    li.appendChild(document.createTextNode(total));
-    //li.innerText = total;
-    ul.appendChild(li);
+    var li;
+    const split = prev.split(',');
+    ul.innerHTML = "";
+    for (const op in split){
+        li = document.createElement('li');
+        li.appendChild(document.createTextNode(split[op]));
+        //li.innerText = total;
+        ul.appendChild(li);
+    }
+    if(count > 5) {
+        li = document.createElement('li');
+        var others = "and " + count.toString() + " more..."; 
+        li.appendChild(document.createTextNode(others));
+        ul.appendChild(li);
+    }
 }
 
 function uuid() {
@@ -83,10 +93,12 @@ async function appendClickedButton(b) {
 
         console.log("[+] Client ID: " + response.data.clientId)
         console.log("[+] Previous operation(s): " + response.data.prev)
+        console.log("[+] Count(s): " + response.data.count.toString())
+
 
         var result = response.data.result.toString()
 
-        addToHistory(arg1, op, arg2, result)    // prev with redis
+        addToHistory(response.data.prev, response.data.count)    // prev with redis
 
         arg1 = result
         arg2 = ''
