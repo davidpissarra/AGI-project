@@ -28,9 +28,10 @@ router.get('/sub', async (req, res) => {
     client = redis.createClient({
       url: 'redis://db:6379'
     });
+    await client.connect();
   }
 
-  await client.connect();
+  
 
   try {
     client.lPush(idOfClient, operation);

@@ -17,7 +17,6 @@ var clientId = '';
 
 
 function addToHistory(prev, count) {
-    // Stores locally for now
     var ul = document.getElementById('calculation_list');
     var li;
     const split = prev.split(',');
@@ -30,6 +29,7 @@ function addToHistory(prev, count) {
     }
     if(count > 5) {
         li = document.createElement('li');
+        count = count - 5;
         var others = "and " + count.toString() + " more..."; 
         li.appendChild(document.createTextNode(others));
         ul.appendChild(li);
