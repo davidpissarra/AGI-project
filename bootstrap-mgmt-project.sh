@@ -13,4 +13,4 @@ git clone https://github.com/cloudalchemy/ansible-grafana.git
 mkdir -p ansible-grafana/roles/cloudalchemy.grafana
 mv ansible-grafana/defaults/ ansible-grafana/handlers/ ansible-grafana/meta/ ansible-grafana/molecule/ ansible-grafana/tasks/ ansible-grafana/templates/ ansible-grafana/vars/ ansible-grafana/roles/cloudalchemy.grafana/
 
-export ANSIBLE_ROLES_PATH=$ANSIBLE_ROLES_PATH:/home/vagrant/ansible-node-exporter/roles:/home/vagrant/ansible-prometheus/roles:/home/vagrant/ansible-grafana/roles
+echo 'export ANSIBLE_ROLES_PATH=$ANSIBLE_ROLES_PATH:/home/vagrant/ansible-node-exporter/roles:/home/vagrant/ansible-prometheus/roles:/home/vagrant/ansible-grafana/roles' >> /home/vagrant/.bashrc
