@@ -29,24 +29,30 @@
         static_configs:
           - targets:
             - "web1:9100"
+            - "web5:9100"
 
       - job_name: "Sub Servers"
         metrics_path: "/metrics"
         static_configs:
           - targets:
             - "web2:9100"
+            - "web6:9100"
 
       - job_name: "Mult Servers"
         metrics_path: "/metrics"
         static_configs:
           - targets:
             - "web3:9100"
+            - "web7:9100"
+            - "web9:9100"
             
       - job_name: "Div Servers"
         metrics_path: "/metrics"
         static_configs:
           - targets:
             - "web4:9100"
+            - "web8:9100"
+            - "web10:9100"
 
 # grafana configuration
 - hosts: grafana

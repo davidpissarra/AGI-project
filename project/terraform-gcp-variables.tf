@@ -4,7 +4,7 @@
 # Name of the project, replace "XX" for your
 # respective group ID
 variable "GCP_PROJECT_ID" {
-    default = "project-agisit"
+    default = "project-sim-367015"
 }
 
 # A list of machine types is found at:
@@ -20,6 +20,15 @@ variable "GCP_MACHINE_TYPE" {
 # https://cloud.google.com/compute/docs/regions-zones/regions-zones?hl=en_US
 # For prices of your deployment check:
 # Compute Engine dashboard -> VM instances -> Zone
-variable "GCP_ZONE" {
+variable "GCP_REGION" {
+    default = "europe-west1"
+}
+variable "GCP_ZONE_B" {
+    default = "europe-west1-b"
+}
+variable "GCP_ZONE_C" {
     default = "europe-west1-c"
+}
+variable "GCP_ZONE_D" {
+    default = "europe-west1-d"
 }

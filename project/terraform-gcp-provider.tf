@@ -6,7 +6,7 @@ provider "google" {
     # Create/Download your credentials from:
     # Google Console -> "APIs & services -> Credentials"
     # Choose create- > "service account key" -> compute engine service account -> JSON
-    credentials = file("project-agisit-bef000f50031.json")
+    credentials = file("project-sim-367015-1ee0d95ee4dc.json")
     project = var.GCP_PROJECT_ID
-    zone = var.GCP_ZONE
+    region = var.GCP_REGION
 }

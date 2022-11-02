@@ -3,14 +3,20 @@
 
 # Modify the line with the ansible_host for the public IP address of your Tenant
 # For that, un-comment the following line before running instances configuration
-balancer    ansible_host=35.205.94.171   ansible_user=ubuntu ansible_connection=ssh
-prometheus  ansible_host=34.78.235.57    ansible_user=ubuntu ansible_connection=ssh
-grafana     ansible_host=34.140.177.103  ansible_user=ubuntu ansible_connection=ssh
-web1        ansible_host=34.140.4.70     ansible_user=ubuntu ansible_connection=ssh
-web2        ansible_host=35.205.245.35   ansible_user=ubuntu ansible_connection=ssh
-web3        ansible_host=34.77.50.110    ansible_user=ubuntu ansible_connection=ssh
-web4        ansible_host=34.77.141.130   ansible_user=ubuntu ansible_connection=ssh
-db          ansible_host=10.147.129.52   ansible_user=ubuntu ansible_connection=ssh
+balancer    ansible_host=   ansible_user=ubuntu ansible_connection=ssh
+prometheus  ansible_host=   ansible_user=ubuntu ansible_connection=ssh
+grafana     ansible_host=   ansible_user=ubuntu ansible_connection=ssh
+web1        ansible_host=   ansible_user=ubuntu ansible_connection=ssh
+web2        ansible_host=   ansible_user=ubuntu ansible_connection=ssh
+web3        ansible_host=   ansible_user=ubuntu ansible_connection=ssh
+web4        ansible_host=   ansible_user=ubuntu ansible_connection=ssh
+web5        ansible_host=   ansible_user=ubuntu ansible_connection=ssh
+web6        ansible_host=   ansible_user=ubuntu ansible_connection=ssh
+web7        ansible_host=   ansible_user=ubuntu ansible_connection=ssh
+web8        ansible_host=   ansible_user=ubuntu ansible_connection=ssh
+web9        ansible_host=   ansible_user=ubuntu ansible_connection=ssh
+web10       ansible_host=   ansible_user=ubuntu ansible_connection=ssh
+db          ansible_host=   ansible_user=ubuntu ansible_connection=ssh
 
 # The local deployment host VM
 [osmgmt]
@@ -22,18 +28,30 @@ web1
 web2
 web3
 web4
+web5
+web6
+web7
+web8
+web9
+web10
 
 [web_add]
 web1
+web5
 
 [web_sub]
 web2
+web6
 
 [web_mult]
 web3
+web7
+web9
 
 [web_div]
 web4
+web8
+web10
 
 [loadbal]
 balancer
@@ -44,6 +62,12 @@ web1
 web2
 web3
 web4
+web5
+web6
+web7
+web8
+web9
+web10
 
 [targets]
 balancer
@@ -53,6 +77,12 @@ web1
 web2
 web3
 web4
+web5
+web6
+web7
+web8
+web9
+web10
 
 [redis]
 db

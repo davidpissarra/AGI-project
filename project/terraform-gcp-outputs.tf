@@ -15,8 +15,14 @@ output "grafana" {
 }
 
 # example for a set of identical instances created with "count"
-output "web_IPs"  {
-  value = formatlist("%s = %s", google_compute_instance.web[*].name, google_compute_instance.web[*].network_interface.0.access_config.0.nat_ip)
+output "webzoneb_IPs"  {
+  value = formatlist("%s = %s", google_compute_instance.webzoneb[*].name, google_compute_instance.webzoneb[*].network_interface.0.access_config.0.nat_ip)
+}
+output "webzonec_IPs"  {
+  value = formatlist("%s = %s", google_compute_instance.webzonec[*].name, google_compute_instance.webzonec[*].network_interface.0.access_config.0.nat_ip)
+}
+output "webzoned_IPs"  {
+  value = formatlist("%s = %s", google_compute_instance.webzoned[*].name, google_compute_instance.webzoned[*].network_interface.0.access_config.0.nat_ip)
 }
 
 output "db_IP" {
