@@ -19,29 +19,49 @@ router.get('/secret', (req, res) => {
 });
 
 router.get('/div', async (req, res) => {
-  var operationResult = parseFloat(req.query.arg1) / parseFloat(req.query.arg2);
-  var operation = req.query.arg1 + ' / ' + req.query.arg2 + ' = ' + operationResult
+  var operationResult = '';
+  var operation = '';
   var idOfClient = req.query.clientId;
   var previous = [];
   var count = 0;
-  if(client === null){
+
+  if (client === null) {
     client = redis.createClient({
       url: 'redis://db:6379'
     });
     await client.connect();
   }
 
-  
-  
   try {
-    client.lPush(idOfClient, operation);
+    if (parseFloat(req.query.arg2) === 0) {     // division by 0
+      operationResult = 'error';
+    } else {
+      var opResult = parseFloat(req.query.arg1) / parseFloat(req.query.arg2);
 
-    count = await client.incr(idOfClient + "_count");
+      operationResult = opResult.toString();
+      operation = req.query.arg1 + ' / ' + req.query.arg2 + ' = ' + operationResult;
+    }
+  } catch (error) {
+     operationResult = 'error';
+  }
+
+  try {
+    var exists = await client.exists(idOfClient + "_count");
+
+    if (operationResult !== 'error') {
+      client.lPush(idOfClient, operation);
+      count = await client.incr(idOfClient + "_count");
+    } else if (exists === 1) {
+      count = await client.get(idOfClient + "_count");
+    } else {
+      res.json({ result: operationResult, clientId: idOfClient, prev: previous.toString(), count : count });
+    }
 
     previous = await client.lRange(idOfClient, 0, 4);
+
   } catch (error) {
     count = -1;
-  }  
+  }
 
   res.json({ result: operationResult, clientId: idOfClient, prev: previous.toString(), count : count });
 })

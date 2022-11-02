@@ -16,20 +16,26 @@ function addToHistory(prev, count) {
     var ul = document.getElementById('calculation_list');
     var li;
     const split = prev.split(',');
+
     ul.innerHTML = "";
-    for (const op in split){
+
+    for (const op in split) {
         li = document.createElement('li');
         li.appendChild(document.createTextNode(split[op]));
         ul.appendChild(li);
     }
-    if(count !== null && count > 5) {
+
+    if (count !== null && count > 5) {
         li = document.createElement('li');
+
         count = count - 5;
-        var others = "and " + count.toString() + " more..."; 
+        var others = "and " + count.toString() + " more...";
+
         li.appendChild(document.createTextNode(others));
         ul.appendChild(li);
-	localStorage.setItem('count', count + 5);
+	    localStorage.setItem('count', count + 5);
     }
+    
     localStorage.setItem('prev', prev);
 }
 
@@ -41,14 +47,13 @@ function uuid() {
   }
 
 function processId(){
-    clientId = localStorage.getItem('uuid'); 
+    clientId = localStorage.getItem('uuid');
     if(clientId === null){
-        clientId = uuid(); 
+        clientId = uuid();
         localStorage.setItem('uuid', clientId)
     }
-    
-}
 
+}
 
 async function appendClickedButton(b) {
     if (b === 'del') {
@@ -62,18 +67,19 @@ async function appendClickedButton(b) {
 
         clickedEquals = false;
 
-    } else if(b === 'ac') {
+    } else if (b === 'ac') {
         arg1 = ''
         arg2 = ''
         op = ''
 
         clickedEquals = false;
 
-    } else if (b === '='){
+    } else if (b === '=') {
         var ops = ["+", "-", "/", "*"]
         if (!ops.includes(op) || arg2 === '') { return }
 
         processId();
+
         switch (op) {
             case '+':
                 var response = await AddService.getAddResult(arg1, arg2, clientId);
@@ -91,12 +97,16 @@ async function appendClickedButton(b) {
                 break;
         }
 
-        console.log("[+] Client ID: " + response.data.clientId)
-        console.log("[+] Previous operation(s): " + response.data.prev)
-        console.log("[+] Count(s): " + response.data.count.toString())
+        var result = response.data.result
+        if (result === 'error') {
+            arg1 = ''
+            arg2 = ''
+            op = ''
+            clickedEquals = false
 
-
-        var result = response.data.result.toString()
+            display.textContent = 'ERROR'
+            return
+        }
 
         addToHistory(response.data.prev, response.data.count)    // prev with redis
 
@@ -157,13 +167,11 @@ async function appendClickedButton(b) {
     display.textContent = arg1 + op + arg2
 }
 
-
 window.addEventListener('load', (event) => {
-  if (localStorage.getItem('prev') !== null){
- 	addToHistory(localStorage.getItem('prev'), localStorage.getItem('count'));       
+  if (localStorage.getItem('prev') !== null) {
+ 	addToHistory(localStorage.getItem('prev'), localStorage.getItem('count'));
   }
 });
-
 
 var number1 = document.getElementById('button0');
 number1.addEventListener('click', () => appendClickedButton('0'));
