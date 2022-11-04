@@ -14,9 +14,11 @@
 
 Our project consists of a simple calculator web application composed by the four basic operations (addition, subtraction, multiplication and division). We used VM instances since they provide better isolation properties than containers.
 
+**Presentation Video:** https://youtu.be/6UHP2xfFyMo
+
 ## Launch Management Node
 
-In order to lauch the projetc management node, the vagrant file path need to be defined. As a result, the selected vagrant file will be run when running the command vagrant up. Finally, the management node can be acessed by ssh.
+In order to launch the project management node, the vagrant file path need to be defined. As a result, the selected vagrant file will be run when running the command vagrant up. Finally, the management node can be accessed by ssh.
 
 ```
 export VAGRANT_VAGRANTFILE="Vagrantfile.project"
@@ -24,17 +26,23 @@ vagrant up
 vagrant ssh
 ```
 
-To allow the comunication between the management node and the deployed infrastruture, a RSA keypair need to be created.
+To allow the communication between the management node and the deployed infrastructure, a RSA keypair need to be created.
 
 ```
 ssh-keygen -t rsa -b 4096
 ```
 
-## Infrastruture Deployment and Provision
+## Infrastructure Deployment and Provision
 
 **IMPORTANT**: If you are running the code in a project other than the one we provided, you will need to enable some APIs/services in GCP. For this, enter your project dashboard, navigate to APIs & Services → Enabled APIs & Services, click Enable APIs & Services and there search for Compute Engine API and Google Cloud Memorystore for Redis API; enable both of these and you are good to go.
 
+<<<<<<< HEAD
+After having the terraform files all set, all the plugins should be installed (terraform init), a plan must be scheduled (terraform plan), in order to be able to apply/allocate the intended resources for the infrastructure (terraform apply).
+=======
+**IMPORTANT**: If you are running the code in a project other than the one we provided, you will need to enable some APIs/services in GCP. For this, enter your project dashboard, navigate to APIs & Services → Enabled APIs & Services, click Enable APIs & Services and there search for Compute Engine API and Google Cloud Memorystore for Redis API; enable both of these and you are good to go.
+
 After having the terraform files all set, all the plugins should be installed (terraform init), a plan must be scheduled (terraform plan), in order to be able to apply/allocate the inteded resourses for the infrastructure (terraform apply).
+>>>>>>> 710931aaa875abb142c06ae4a6346cc4641c4c0f
 
 ```
 terraform init
@@ -87,7 +95,7 @@ HAProxy Statistics (Load Balancing stats):
 
 ## Conclude Experiments
 
-After all experiments with the infrastructure, we preceed destroying the allocated resources as follows:
+After all experiments with the infrastructure, we precede destroying the allocated resources as follows:
 
 ```
 terraform destroy
