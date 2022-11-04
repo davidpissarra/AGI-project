@@ -49,7 +49,7 @@ ansible-playbook monitoring_config.yml
 
 GCP must show the following VM instances:
 
-![](./figs/gcp.png "GCP VM instances")
+![](https://cdn.discordapp.com/attachments/1023993625140543510/1038054813562327150/gcp.png "GCP VM instances")
 
 ## Endpoints
 
@@ -65,7 +65,7 @@ Prometheus:
 <load-balancer-ip>:9090
 ```
 
-![](./figs/prometheus.png "Prometheus page")
+![](https://cdn.discordapp.com/attachments/1023993625140543510/1038054814522822666/prometheus.png "Prometheus page")
 
 Grafana:
 
@@ -73,7 +73,7 @@ Grafana:
 <load-balancer-ip>:3000
 ```
 
-![](./figs/grafana.png "Grafana page")
+![](https://cdn.discordapp.com/attachments/1023993625140543510/1038054813855924274/grafana.png "Grafana page")
 
 HAProxy Statistics (Load Balancing stats):
 
@@ -81,7 +81,7 @@ HAProxy Statistics (Load Balancing stats):
 <load-balancer-ip>:3000/haproxy?stats
 ```
 
-![](./figs/haproxy.png "HAProxy Stats page")
+![](https://cdn.discordapp.com/attachments/1023993625140543510/1038054814208237589/haproxy.png "HAProxy Stats page")
 
 ## Conclude Experiments
 
