@@ -32,7 +32,9 @@ ssh-keygen -t rsa -b 4096
 
 ## Infrastruture Deployment and Provision
 
-After having the terraform files all set, all the plugins should be installed (terraform init), a plan must be scheduled (terraform plan), in order to be able to apply/allocate the inteded resourses for the infrastructure (terraform apply). 
+**IMPORTANT**: If you are running the code in a project other than the one we provided, you will need to enable some APIs/services in GCP. For this, enter your project dashboard, navigate to APIs & Services → Enabled APIs & Services, click Enable APIs & Services and there search for Compute Engine API and Google Cloud Memorystore for Redis API; enable both of these and you are good to go.
+
+After having the terraform files all set, all the plugins should be installed (terraform init), a plan must be scheduled (terraform plan), in order to be able to apply/allocate the inteded resourses for the infrastructure (terraform apply).
 
 ```
 terraform init
